@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cont.dao.BillDAO">
+
+    <select id="selectAll" resultType="com.cont.model.BillModel">
+        select * from t_bill
+    </select>
+
+    <sql id="BillColume">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="service_no != null">service_no,</if>
+            <if test="status != null">status,</if>
+            <if test="cus_id != null">cus_id,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="update_u_id != null">update_u_id,</if>
+        </trim>
+    </sql>
+
+
+    <sql id="BillValue">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="service_no != null">#{service_no},</if>
+            <if test="status != null">#{status},</if>
+            <if test="cus_id != null">#{cus_id},</if>
+            <if test="password != null">#{password},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+            <if test="update_u_id != null">#{update_u_id},</if>
+        </trim>
+    </sql>
+
+    <insert id="insertBill"  parameterType="com.cont.model.BillModel">
+        insert into t_bill (
+        <include refid="BillColume"/>
+        ) values (
+        <include refid="BillValue"/>
+        )
+    </insert>
+
+    <update id="updateByPk">
+        UPDATE t_bill
+        <trim prefix="SET" suffixOverrides=",">
+        <if test="service_no !=null and service_no!=''">service_no=#{service_no},</if>
+        <if test="status !=null and status!=''">status=#{status},</if>
+        <if test="cus_id !=null and cus_id!=''">cus_id=#{cus_id},</if>
+        <if test="create_time !=null and create_time!=''">create_time=#{create_time},</if>
+        <if test="update_time !=null and update_time!=''">update_time=#{update_time},</if>
+        <if test="update_u_id !=null and update_u_id!=''">update_u_id=#{update_u_id},</if>
+        </trim>
+        WHERE
+        id=#{id}
+    </update>
+	<sql id = "selectAndCondition">
+		 SELECT b.*,u.u_name AS cus_name,u.u_cname AS cus_cname,u.u_weixin,
+		uu.u_name AS update_name,uu.u_cname AS update_cname
+		 FROM  t_bill b
+		LEFT JOIN t_user u ON b.cus_id = u.id
+		LEFT JOIN t_user uu ON b.update_u_id = uu.id
+        <where>
+            <if test="bill_no != null and bill_no != ''">
+                and b.bill_no like "%${bill_no}%"
+            </if>
+            <if test="u_weixin != null and u_weixin != ''">
+                and u.u_weixin like "%${u_weixin}%"
+            </if>
+            <if test="status != null and status != ''">
+                and b.status = #{status}
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                and b.create_time &gt;=  "${startDate}"
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                and b.create_time &lt;=  "${endDate}"
+            </if>
+            
+        </where>
+	</sql>
+    <select id="selectByPage" parameterType="com.cont.model.BillModel" resultType="com.cont.model.BillModel">
+        <include refid="selectAndCondition"/>
+        order by
+        b.id desc
+        limit
+        #{pageIndex},#{pageSize}
+    </select>
+	<select id="selectCount" parameterType="com.cont.model.BillModel" resultType="java.lang.Integer">
+        select count(1) as results from (
+        <include refid="selectAndCondition"/>
+        ) t
+    </select>
+    <delete id="deleteByPks" parameterType="java.lang.String">
+        delete from t_bill where id in(${ids})
+    </delete>
+
+</mapper>
