@@ -18,11 +18,34 @@ public abstract class SuperModel {
     private String update_cname;
     private String update_time;
     //从第多少条开始
-    private Integer pageIndex;
+    private Integer pageIndex = 0;
 
     //页面显示条数
-    private Integer pageSize = 15;
+    private Integer limit = 15;
+    
+	/**
+	 * 以下两个属性是搜索时候用到的，分别是搜索时间的开始和结束，对应数据表中的创建时间
+	 */
+	private String startDate;
+	private String endDate;
 
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	
 	public String getCreate_u_id() {
 		return create_u_id;
 	}
@@ -92,14 +115,14 @@ public abstract class SuperModel {
 	}
 
 	public void setPageIndex(Integer pageIndex) {
-		this.pageIndex = pageIndex;
+		this.pageIndex = pageIndex*10;
 	}
 
-	public Integer getPageSize() {
-		return pageSize;
+	public Integer getLimit() {
+		return limit;
 	}
 
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
+	public void setLimit(Integer limit) {
+		this.limit = limit;
 	}
 }

@@ -5,15 +5,19 @@
 	id="WebApp_ID" version="2.5">
 	<display-name>contract2</display-name>
 
-	<!-- 读取spring配置文件 -->
+	<!-- 下面两个配置是初始化spring的IOC容器 -->
+	
+	
+	<!-- 指定加载spring配置文件的位置 -->
+	<!-- classpath代表从类路径开始找 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:conf/spring-mybatis.xml</param-value>
 	</context-param>
 	
+	<!-- 指定spring的监听器，可以让IOC容器随着项目的启动而创建，关闭而销毁 -->
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener
-		</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
 
@@ -31,6 +35,13 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
+	<filter-mapping>
+		<filter-name>SpringEncodingFilter</filter-name>
+		<url-pattern>/Api/*</url-pattern>
+	</filter-mapping>
+	
+	
+	<!-- 自定义过滤器 -->
 	<filter>
 		<filter-name>contextFilter</filter-name>
 		<filter-class>com.cont.utils.WebContextFilter</filter-class>
@@ -39,14 +50,11 @@
 		<filter-name>contextFilter</filter-name>
 		<url-pattern>/Api/*</url-pattern>
 	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SpringEncodingFilter</filter-name>
-		<url-pattern>/Api/*</url-pattern>
-	</filter-mapping>
 	
 	<!-- 日志文件管理 -->
 	<context-param>
 		<param-name>logbackConfigLocation</param-name>
+		<!-- classpath代表类路径 -->
 		<param-value>classpath:conf/logback.xml</param-value>
 	</context-param>
 	<listener>
@@ -57,8 +65,11 @@
 	<servlet>
 		<servlet-name>spring</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 前端控制器的一个上下文 -->
+		<!-- 比如注解(@Controler @Service)扫描等等 -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
+			<!-- classpath代表类路径 -->
 			<param-value>classpath:conf/spring-mvc.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
@@ -68,9 +79,8 @@
 		<url-pattern>/Api/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- 默认首页 -->
 	<welcome-file-list>
-		<!--<welcome-file>index.html</welcome-file>-->
-		<!--<welcome-file>index.jsp</welcome-file>-->
 		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
 

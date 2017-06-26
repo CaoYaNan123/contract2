@@ -29,7 +29,7 @@ public class BillModel extends SuperModel{
 		1：审批通过
 		2：审批拒绝
 		3：正在维修
-		4：完成
+		4：已完成
 	*/
 	private String status;
 	//客户id,外键
@@ -40,10 +40,7 @@ public class BillModel extends SuperModel{
 	private String cus_name;
 	//客户微信
 	private String u_weixin;
-	//报修单提交时间
-	private String startDate;
-	//报修单关闭时间
-	private String endDate;
+
 	
 	public long getId() {
 		return id;
@@ -69,18 +66,6 @@ public class BillModel extends SuperModel{
 	}
 	public void setCus_cname(String cus_cname) {
 		this.cus_cname = cus_cname;
-	}
-	public String getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-	public String getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
 	}
 	public String getCus_name() {
 		return cus_name;

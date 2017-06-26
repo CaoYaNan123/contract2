@@ -55,6 +55,7 @@
         WHERE
         id=#{id}
     </update>
+    
 	<sql id = "selectAndCondition">
 		 SELECT b.*,u.u_name AS cus_name,u.u_cname AS cus_cname,u.u_weixin,
 		uu.u_name AS update_name,uu.u_cname AS update_cname
@@ -77,7 +78,6 @@
             <if test="endDate !=null and endDate !=''">
                 and b.create_time &lt;=  "${endDate}"
             </if>
-            
         </where>
 	</sql>
     <select id="selectByPage" parameterType="com.cont.model.BillModel" resultType="com.cont.model.BillModel">
@@ -85,15 +85,16 @@
         order by
         b.id desc
         limit
-        #{pageIndex},#{pageSize}
+        #{pageIndex},#{limit}
     </select>
 	<select id="selectCount" parameterType="com.cont.model.BillModel" resultType="java.lang.Integer">
         select count(1) as results from (
         <include refid="selectAndCondition"/>
         ) t
     </select>
+    
     <delete id="deleteByPks" parameterType="java.lang.String">
-        delete from t_bill where id in(${ids})
+        delete from t_bill where id in (#{ids})
     </delete>
 
 </mapper>

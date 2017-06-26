@@ -21408,7 +21408,7 @@ define('bui/form/form',['bui/common','bui/form/fieldcontainer'],function (requir
        */
       method : {
         view : true,
-        value : 'get'
+        value : 'post'
       },
       /**
        * \u9ed8\u8ba4\u7684loader\u914d\u7f6e
