@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cont.dao.ContractDao">
+
+	
+	
+	<!-- 手动字段映射 -->
+	<!-- id; concatNo; concatPerson;concatPhone;createTime;createUId; `id` `concat_no` 
+		`concat_person` `concat_phone` `create_time` `create_u_id` -->
+	<resultMap type="com.cont.model.ContractModel" id="contract">
+		<id column="id" property="id" />
+		<result column="concat_no" property="concatNo" />
+		<result column="concat_person" property="concatPerson" />
+		<result column="concat_phone" property="concatPhone" />
+		<result column="create_time" property="createTime" />
+		<result column="create_u_id" property="createUId" />
+		<result column="u_cname" property="createUserName" />
+	</resultMap>
+
+	<!-- 得到总记录数 -->
+	<select id="getAllCounts" resultType="java.lang.Integer">
+		select count(1) from t_contract
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="selectByPage" parameterType="com.cont.model.ContractModel"
+		resultMap="contract">
+		<!-- `id` `concat_person` `concat_phone` `create_time` `create_u_id` `concat_no` -->
+		select
+		c.id,c.concat_no,c.concat_person,c.concat_phone,c.create_time,c.create_u_id,u.u_cname
+		from t_contract c left join t_user u
+		on c.create_u_id=u.id
+		<where>
+			<if test="concatNo != null and concatNo != ''">
+				and c.concat_no like "%${concatNo}%"
+			</if>
+			<if test="concatPerson != null and concatPerson != ''">
+				and c.concat_person like "%${concatPerson}%"
+			</if>
+			<if test="concatPhone != null and concatPhone != ''">
+				and c.concat_phone like "%${concatPhone}%"
+			</if>
+			<if test="startDate !=null and startDate !=''">
+				and c.create_time &gt;= "${startDate}"
+			</if>
+			<if test="endDate !=null and endDate !=''">
+				and c.create_time &lt;= "${endDate}"
+			</if>
+		</where>
+		limit
+		#{pageIndex},#{limit}
+
+		
+	</select>
+	
+	<!-- 添加一条合同 -->
+	<insert id="save" parameterType="com.cont.model.ContractModel" >
+		insert into t_contract 
+		(concat_person, concat_phone, create_time, create_u_id, concat_no) values 
+		(#{concatPerson}, #{concatPhone}, #{createTime}, #{createUId}, #{concatNo})
+	</insert>
+	
+	
+	
+	<!--  根据主键查询一条合同  ContractModel getContractById (long id)-->
+	
+	<select id="getContractById" parameterType="java.lang.Long" resultMap="contract">
+		select * from t_contract where id=#{id}
+	</select>
+	
+	<!--  更新  public int update (ContractModel contract)  -->
+	<update id="update" parameterType="com.cont.model.ContractModel">
+		update t_contract set
+		concat_person = #{concatPerson},
+		concat_phone = #{concatPhone}, 
+		create_time = #{createTime}, 
+		create_u_id = #{createUId}, 
+		concat_no = #{concatNo}
+		where id=#{id}
+	</update>
+	
+	<!-- 通过主键删除一条合同 public int deleteById (long id) -->
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from t_contract where id=#{id}
+	</delete>
+	
+	<!-- 通过主键List集合删除多条合同  public int deleteByIds (List<Long> ids);-->
+	<delete id="deleteByIds" parameterType="java.util.List">
+		delete from t_contract where id in 
+		<foreach collection="list" item="id" separator="," open="(" close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
+
+
+
+
+
+
