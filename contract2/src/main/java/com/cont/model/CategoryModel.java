@@ -38,6 +38,11 @@ public class CategoryModel extends SuperModel {
 
     //类别层级
     private Integer catLevel;
+    
+    public CategoryModel () {
+    	this.setLimit(10000);
+    	this.setPageIndex(0);
+    }
 
     public Long getCatId() {
         return catId;
@@ -86,4 +91,11 @@ public class CategoryModel extends SuperModel {
     public void setCatLevel(Integer catLevel) {
         this.catLevel = catLevel;
     }
+
+	@Override
+	public String toString() {
+		return "CategoryModel [catId=" + catId + ", catName=" + catName + ", catDesc=" + catDesc + ", parentCatId="
+				+ parentCatId + ", createTime=" + createTime + ", catLevel=" + catLevel + "]";
+	}
+    
 }

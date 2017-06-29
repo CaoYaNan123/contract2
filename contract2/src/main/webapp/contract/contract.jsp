@@ -32,13 +32,13 @@ code {
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-1 control-label">乙方姓名：</label>
+						<label class="col-lg-1 control-label">联系姓名：</label>
 						<div class="col-lg-4 controls">
 							<input type="text" class="control-text" name="concatPerson">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-1 control-label">乙方联系方式：</label>
+						<label class="col-lg-1 control-label">联系方式：</label>
 						<div class="col-lg-4 controls">
 							<input type="text" class="control-text" name="concatPhone">
 						</div>
@@ -78,23 +78,19 @@ code {
 						[ 'common/search', 'bui/overlay' ],
 						function(Search, Overlay) {
 							var columns = [
-									{
-										title : 'ID',
-										dataIndex : 'id',
-										width : 50,
-									},
+									
 									{
 										title : '合同单编号',
 										dataIndex : 'concatNo',
 										width : 150,
 									},
 									{
-										title : '乙方姓名',
+										title : '联系姓名',
 										dataIndex : 'concatPerson',
 										width : 150
 									},
 									{
-										title : '乙方联系方式',
+										title : '联系方式',
 										dataIndex : 'concatPhone',
 										width : 150
 									},
@@ -104,11 +100,7 @@ code {
 										width : 150,
 										renderer : BUI.Grid.Format.dateRenderer
 									},
-									{
-										title : '创建人ID',
-										dataIndex : 'createUId',
-										width : 100,
-									},
+									
 									{
 										title : '创建人姓名',
 										dataIndex : 'createUserName',

@@ -74,10 +74,7 @@
 	<update id="update" parameterType="com.cont.model.ContractModel">
 		update t_contract set
 		concat_person = #{concatPerson},
-		concat_phone = #{concatPhone}, 
-		create_time = #{createTime}, 
-		create_u_id = #{createUId}, 
-		concat_no = #{concatNo}
+		concat_phone = #{concatPhone}
 		where id=#{id}
 	</update>
 	
@@ -94,6 +91,10 @@
 		</foreach>
 	</delete>
 
+	<!-- 生成合同编号时需要获取当前的最大值(0001) public String getMaxNo(String currentDate); -->
+	<select id="getMaxNo" parameterType="java.lang.String" resultType="java.lang.String">
+    	select MAX(concat_no) FROM t_contract WHERE concat_no LIKE "%${value}%"
+   	</select>
 </mapper>
 
 

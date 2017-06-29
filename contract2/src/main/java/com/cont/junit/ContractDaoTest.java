@@ -85,12 +85,9 @@ public class ContractDaoTest {
 	@Test
 	public void testUpdate() throws Exception {
 		ContractModel contract = new ContractModel();
-		contract.setId(5L);
-		contract.setConcatNo("2017062600002");
+		contract.setId(17L);
 		contract.setConcatPerson("曹亚男");
 		contract.setConcatPhone("13838389438");
-		contract.setCreateTime(new Date());
-		contract.setCreateUId(2L);
 		
 		contractDao.update(contract);
 	}

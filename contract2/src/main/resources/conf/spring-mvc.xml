@@ -19,7 +19,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/User/login"/>
+            <mvc:exclude-mapping path="/user/login"/>
             <bean class="com.cont.utils.ServiceHandlerInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

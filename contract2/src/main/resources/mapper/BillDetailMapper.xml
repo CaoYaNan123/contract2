@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cont.dao.BillDetailDao">
+
+    <resultMap type="com.cont.model.BillDetailModel" id="billDetail">
+    	<!-- 主键，报修单id -->
+    	<id column="id" property="id"/>
+    	
+    	<!-- 基本信息映射 -->
+    	<result column="bill_no" property="billNo"/>
+    	<result column="concat_no" property="contractNum"/>
+    	<result column="u_cname" property="cusName"/>
+    	<result column="u_weixin" property="uWeixin"/>
+    	<result column="u_phone" property="uPhone"/>
+    	<result column="status" property="status"/>
+    	<result column="status_mean" property="statusMean"/>
+    	
+    	<!-- 日志信息映射 -->
+    	<result column="update_u_id" property="updateUId"/>
+    	<result column="deal_u_id" property="dealUId"/>
+    	<result column="opreate_event" property="opreateEvent"/>
+    	<result column="update_time" property="updateTime"/>
+    	<result column="deal_user_name" property="dealUserName"/>
+    	<result column="update_user_name" property="updateUserName"/>
+    	
+    	<!-- 设备信息的属性 -->
+    	<result column="device_id" property="deviceId"/>
+    	<result column="device_name" property="deviceName"/>
+    	<result column="start_time" property="startTime"/>
+    	<result column="end_time" property="endTime"/>
+    	<result column="c_desc" property="deviceDesc"/>
+    	<result column="img_url" property="imgUrl"/>
+    </resultMap>
+    <!-- 
+    主键	报修单id
+    
+    基本信息所属表及字段
+b  t_bill表字段		bill_no
+  					status(映射status_mean)
+  
+c  t_contract		concat_no
+  
+u  t_user			u_cname
+  					u_weixin
+  					u_phone
+  		select b.bill_no, b.status,  u.u_cname, u.u_weixin, u.u_phone, c.concat_no,
+			(case b.status
+				when '0' then '已提交'
+				when '1' then '审批通过'
+				when '2' then '审批拒绝'
+				when '3' then '正在维修'
+				when '4' then '已完成'
+				else '未知状态'
+			end) as status_mean
+		  		from t_bill b left join t_user u on b.cus_id=u.id
+					left join t_contract c on c.concat_person=u.u_cname and c.concat_phone=u.u_phone  
+  				
+  日志记录所属表及字段
+s t_service_log		update_u_id(查询update_user_name)
+  					deal_u_id(查询deal_user_name)
+  					opreate_event
+  					update_time
+  					(t_service_log中service_id字段对应t_bill表中的id主键)
+
+  			第一步骤select s.update_u_id,s.deal_u_id,s.opreate_event,s.update_time 
+  					from t_bill b left join t_service_log on b.id
+  				
+  			第二步骤select u_cname from t_user where id=3
+  					
+  设备信息所属表及字段
+d t_device			id->as device_id
+  					device_name
+  					start_time
+  					end_time
+  					
+b_d t_bill_detail		c_desc(里面有device_id字段)
+  
+i t_img				img_url
+  
+  select d.id as device_id, d.device_name, d.start_time, d.end_time, b_d.c_desc
+  	from t_bill b left join t_bill_detail b_d on b.id=b_d.bill_id
+  		left join t_device d on b_d.device_id=d.id
+  				
+  			
+  				
+     -->
+    <!-- 基本信息的查询 -->
+    <select id="getBasicMsg" parameterType="java.lang.Long" resultMap="billDetail">
+		select b.bill_no, b.status,  u.u_cname, u.u_weixin, u.u_phone, c.concat_no,
+			(case b.status
+				when '0' then '已提交'
+				when '1' then '审批通过'
+				when '2' then '审批拒绝'
+				when '3' then '正在维修'
+				when '4' then '已完成'
+				else '未知状态'
+			end) as status_mean
+		  		from t_bill b left join t_user u on b.cus_id=u.id
+					left join t_contract c on c.concat_person=u.u_cname and c.concat_phone=u.u_phone  
+						where b.id=#{billId}  
+	</select>
+	
+	<!-- 日志信息的查询(第一步) -->
+	<select id="getLogMsg" parameterType="java.lang.Long" resultMap="billDetail">
+		select s.update_u_id,s.deal_u_id,s.opreate_event,s.update_time
+			from t_bill b LEFT JOIN t_service_log s ON b.id=s.service_id
+				where b.id=#{billId}
+	</select>
+	<!-- 日志信息的查询(第二步) -->
+	<!-- 通过user主键得到中文名字 -->
+	<select id="getUserNameByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
+		select u_cname from t_user where id=#{value}
+	</select>
+	
+	<!-- 设备信息的查询 -->
+	<select id="getDeviceMsg" parameterType="java.lang.Long" resultMap="billDetail">
+		select d.id as device_id, d.device_name, d.start_time, d.end_time, b_d.c_desc, i.img_url
+		  	from t_bill b left join t_bill_detail b_d on b.id=b_d.bill_id
+		  		left join t_device d on b_d.device_id=d.id
+					left join t_img i on b_d.id=i.bill_detail_id
+						where b.id=#{billId}
+	</select>
+	
+	
+	<!-- 通过报修单号获取报修主键id public Long getIdByBillNum(String billNo); -->
+	<select id="getIdByBillNum" parameterType="java.lang.String" resultType="java.lang.Long">
+		select id from t_bill where bill_no=#{billNo}
+	</select>
+</mapper>

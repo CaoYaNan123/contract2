@@ -22,19 +22,10 @@ code {
 	<div class="container">
 		<div class="row">
 			<form id="J_Form" class="form-horizontal span24">
+				
 				<div class="row">
 					<div class="control-group span8">
-						<label class="control-label"><s>*</s>合同编号：</label>
-						<div class="controls">
-							<input name="concatNo" type="text" data-rules="{required:true}"
-								class="input-normal control-text" />
-						</div>
-					</div>
-					
-				</div>
-				<div class="row">
-					<div class="control-group span8">
-						<label class="control-label"><s>*</s>乙方姓名：</label>
+						<label class="control-label"><s>*</s>联系人姓名：</label>
 						<div class="controls">
 							<input name="concatPerson" type="text" data-rules="{required:true}"
 								class="input-normal control-text">
@@ -43,7 +34,7 @@ code {
 				</div>
 				<div class="row">
 					<div class="control-group span8">
-						<label class="control-label"><s>*</s>乙方联系方式：</label>
+						<label class="control-label"><s>*</s>联系方式：</label>
 						<div class="controls">
 							<input name="concatPhone" type="text" data-rules="{required:true}"
 								class="input-normal control-text">

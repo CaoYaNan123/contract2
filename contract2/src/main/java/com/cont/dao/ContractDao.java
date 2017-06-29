@@ -59,4 +59,9 @@ public interface ContractDao {
 	 * 通过主键List集合删除多条合同
 	 */
 	public int deleteByIds (List<Long> ids);
+	
+	/**
+	 * 生成合同编号时需要获取当前的最大值(0001)
+	 */
+	public String getMaxNo(String currentDate);
 }

@@ -22,17 +22,6 @@ public class BillServiceImp implements BillService{
 		Page<BillModel> page = new Page<BillModel>();
 		//查询总记录数
 		int count = billDAO.selectCount(vo);
-		/**
-		List<BillModel> list = null;
-		//如果记录数大于等于0，则查列表
-		if(count>0){
-			list = billDAO.selectByPage(vo);
-			page.setResults(count);
-			page.setRows(list);
-		}
-		为什么加上等于0之后前端就不再一直loding,
-			因为list属性为null，前台框架就会一直Loging
-		*/
 		List<BillModel> list = new ArrayList<BillModel>();
 		 
 		if(count>0){
@@ -41,6 +30,25 @@ public class BillServiceImp implements BillService{
 		page.setResults(count);
 		page.setRows(list);
 		return page;
+	}
+
+	@Override
+	public int pass(long billId) {
+		return billDAO.pass(billId);
+	}
+
+	@Override
+	public int refuse(long billId) {
+		return billDAO.refuse(billId);
+	}
+
+	@Override
+	public int batchPass(List<Long> billIds) {
+		return billDAO.batchPass(billIds);
+	}
+	@Override
+	public int batchDelete(List<Long> billIds) {
+		return billDAO.batchDelete(billIds);
 	}
 
 }

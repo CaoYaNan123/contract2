@@ -4,7 +4,7 @@ package com.cont.utils;
 import java.util.List;
 
 /**
- * Created by lq on 2017/5/4.
+ * Created by lq on 2017/5/4. 
  */
 public abstract class SuperModel {
 

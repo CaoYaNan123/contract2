@@ -82,8 +82,7 @@
 	</sql>
     <select id="selectByPage" parameterType="com.cont.model.BillModel" resultType="com.cont.model.BillModel">
         <include refid="selectAndCondition"/>
-        order by
-        b.id desc
+        order by b.id
         limit
         #{pageIndex},#{limit}
     </select>
@@ -97,4 +96,29 @@
         delete from t_bill where id in (#{ids})
     </delete>
 
+
+	<!-- 审核通过 -->
+	<update id="pass" parameterType="java.lang.Long">
+		update t_bill set status=1 where id=#{billId}
+	</update>
+	<!-- 审核拒绝 -->
+	<update id="refuse" parameterType="java.lang.Long">
+		update t_bill set status=2 where id=#{billId}
+	</update>
+	
+	<!-- 批量通过 -->
+	<update id="batchPass" parameterType="java.lang.Long">
+		update t_bill set status=1 where id in 
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
+	<!-- 批量删除 -->
+	<delete id="batchDelete" parameterType="java.lang.Long">
+		delete from t_bill where id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
 </mapper>

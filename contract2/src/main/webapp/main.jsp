@@ -70,9 +70,9 @@
 			 	{
 			    id : 'device',
 				menu :	[{    text : '设备维护',
-							 items : [  { id : 'operation', text : '设备管理', href : 'contract/device.jsp' }, 
-							            { id : 'quick', text : '类别管理', href : 'contract/category.jsp' }, 
-							            { id : 'quick', text : '参数管理', href : 'contract/param.jsp' }  ]
+							 items : [  { id : 'operation', text : '设备管理', href : 'contract/device.jsp' },
+							            { id : 'quick', text : '类别管理', href : 'Api/category/getSearchParam' }, 
+							            { id : 'quick', text : '参数管理', href : 'contract/param.jsp' } ]
 						}]
 				}, 
 				

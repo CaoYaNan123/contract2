@@ -55,4 +55,25 @@ public interface BillDAO {
 	 */
 	public int deleteByPks(String ids);
 	
+	
+	/**
+	 * 审核通过
+	 */
+	public Integer pass(Long billId);
+	
+	/**
+	 * 审核拒绝
+	 */
+	public Integer refuse(Long billId);
+	
+	/**
+	 * 批量删除
+	 */
+	public Integer batchPass(List<Long> ids);
+	
+	/**
+	 * 批量删除
+	 */
+	public Integer batchDelete(List<Long> ids);
+	
 }

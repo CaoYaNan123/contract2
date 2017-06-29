@@ -3,7 +3,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>添加合同</title>
+<title>编辑合同</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="${pageContext.request.contextPath }/assets/css/dpl-min.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath }/assets/css/bui-min.css" rel="stylesheet" type="text/css" />
@@ -23,19 +23,10 @@ code {
 		<div class="row">
 			<form id="J_Form" class="form-horizontal span24">
 				<input type="hidden" name="id" value="${contract.id }">
+				
 				<div class="row">
 					<div class="control-group span8">
-						<label class="control-label"><s>*</s>合同编号：</label>
-						<div class="controls">
-							<input name="concatNo" type="text" data-rules="{required:true}"
-								class="input-normal control-text" value="${contract.concatNo }"/>
-						</div>
-					</div>
-					
-				</div>
-				<div class="row">
-					<div class="control-group span8">
-						<label class="control-label"><s>*</s>乙方姓名：</label>
+						<label class="control-label"><s>*</s>联系人姓名：</label>
 						<div class="controls">
 							<input name="concatPerson" type="text" data-rules="{required:true}"
 								class="input-normal control-text" value="${contract.concatPerson }">
@@ -44,7 +35,7 @@ code {
 				</div>
 				<div class="row">
 					<div class="control-group span8">
-						<label class="control-label"><s>*</s>乙方联系方式：</label>
+						<label class="control-label"><s>*</s>联系方式：</label>
 						<div class="controls">
 							<input name="concatPhone" type="text" data-rules="{required:true}"
 								class="input-normal control-text"  value="${contract.concatPhone }">

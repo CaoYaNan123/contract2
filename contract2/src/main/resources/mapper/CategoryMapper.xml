@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.cont.dao.CategoryDao">
+	
+	<!-- 字段映射 -->
+	<resultMap type="com.cont.model.CategoryModel" id="category">
+		<id column="cat_id" property="catId"/>
+		<result column="cat_name" property="catName"/>
+		<result column="cat_desc" property="catDesc"/>
+		<result column="parent_cat_id" property="parentCatId"/>
+		<result column="create_time" property="createTime"/>
+		<result column="cat_level" property="catLevel"/>
+	</resultMap>
+	
+	<!-- 得到总记录数 -->
+	<select id="getAllCounts" resultType="java.lang.Integer">
+		select count(1) from t_category
+	</select>
+	
+	<!-- 按条件查询 -->
+	<select id="selectByPage" parameterType="com.cont.model.CategoryModel" resultMap="category">
+		select cat_id,cat_name,cat_desc,parent_cat_id,create_time,cat_level 
+		from t_category
+		<where>
+			<if test="catName != null and catName != ''">
+				and cat_name like "%${catName}%"
+			</if>
+			<if test="catLevel != null and catLevel !=''">
+				and cat_level like "%${catLevel}%"
+			</if>
+			<if test="startDate !=null and startDate !=''">
+				and c.create_time &gt;= "${startDate}"
+			</if>
+			<if test="endDate !=null and endDate !=''">
+				and c.create_time &lt;= "${endDate}"
+			</if>
+		</where>
+		<!-- limit #{pageIndex},#{limit} -->
+	</select>
+	
+	<!--  根据parent_cat_id获取cat_level public int getCatLevelByPId (int pid); -->
+	<select id="getCatLevelById" parameterType="java.lang.Long" resultType="java.lang.Integer">
+		select cat_level from t_category where cat_id=#{value}
+	</select>
+	
+	
+	<!--  保存 public Integer save (CategoryModel category); -->
+	<insert id="save" parameterType="com.cont.model.CategoryModel" >
+		insert into 
+		t_category (cat_name, cat_desc ,create_time, parent_cat_id,cat_level ) 
+		values (#{catName} , #{catDesc}, #{createTime}, #{parentCatId}, #{catLevel})
+	</insert>
+	<!-- 也不知道它为什么报错！
+	insert into 
+	t_category (cat_name ,parent_cat_id,create_time,cat_level ) 
+	values (#{catName} , #{parentCatId), #{createTime}, #{catLevel}
+	-->
+	
+	
+	<!-- 通过主键ID获取类别信息 public CategoryModel getCatById(); -->
+	<select id="getCatById" parameterType="java.lang.Long" resultMap="category">
+		select cat_id,cat_name,cat_desc,parent_cat_id from t_category where cat_id=#{value}
+	</select>
+	
+	<!-- 通过主键更新cat_name,cat_desc,parent_cat_id,cat_level  public Integer update (CategoryModel category); -->
+	<update id="update" parameterType="com.cont.model.CategoryModel" >
+		update t_category set
+		cat_name=#{catName},
+		cat_desc=#{catDesc},
+		parent_cat_id=#{parentCatId},
+		cat_level=#{catLevel}
+		where cat_id=#{catId}
+	</update>
+	
+	<!-- 删除list集合里面的记录 -->
+	<delete id="delete" parameterType="java.lang.Long" >
+		delete from t_category where cat_id in
+		<foreach collection="list" open="(" close=")" separator="," item="id">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<!-- 通过主键删除一条记录 -->
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from  t_category where cat_id=#{value}
+	</delete>
+	
+	<!-- 通过主键得到姓名 -->
+	<select id="getNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+		select cat_name from t_category where cat_id=#{value}
+	</select>
+</mapper>

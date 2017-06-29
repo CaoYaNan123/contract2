@@ -47,8 +47,6 @@ public class ContractController {
 	 * @param contract
 	 * @return
 	 */
-	// 报错:http://localhost:8080/contract2/contract/contractSave?concatNo=xxx&concatPerson=xxx&concatPhone=xxx
-	// 404 (Not Found)
 	@ResponseBody
 	@RequestMapping("/contractSave")
 	public Map<String, Boolean> save(ContractModel contract, HttpServletRequest request) {
@@ -57,7 +55,6 @@ public class ContractController {
 		long id = user.getId();
 
 		contract.setCreateUId(id);
-		contract.setCreateTime(new Date());
 
 		int i = contractService.save(contract);
 
@@ -90,19 +87,13 @@ public class ContractController {
 	 */
 	@ResponseBody
 	@RequestMapping("/contractUpdate")
-	public Map<String, Boolean> update(ContractModel contract, HttpServletRequest request) {
-		// 设置合同的修改时间，修改人(session域对象中登录的用户)
-		UserModel user = (UserModel) request.getSession().getAttribute("userInfo");
-		long id = user.getId();
+	public Map<String, Boolean> update(ContractModel contract) {
 
-		contract.setCreateUId(id);
-		contract.setCreateTime(new Date());
-		
 		Map<String, Boolean> map = new HashMap<String, Boolean>();
 		int i = contractService.update(contract);
 
-		if (i != 0 ) {
-		//if (true) {
+		if (i != 0) {
+			// if (true) {
 			// 修改成功
 			map.put("success", true);
 		} else {
@@ -110,25 +101,25 @@ public class ContractController {
 		}
 		return map;
 	}
-	
+
 	/**
 	 * 删除操作(异步请求，返回对象封装成json)
 	 */
 	@ResponseBody
 	@RequestMapping("/contractDelete")
 	public Map<String, Boolean> delete(@RequestBody List<String> ids, HttpServletRequest request) {
-		
+
 		List<Long> list = new ArrayList<Long>();
 		for (String id : ids) {
 			list.add(Long.parseLong(id));
 		}
-		
+
 		int i = contractService.deleteByIds(list);
-		
+
 		Map<String, Boolean> map = new HashMap<String, Boolean>();
 
-		//if (i != 0 ) {
-		if ( i==list.size()) {
+		// if (i != 0 ) {
+		if (i == list.size()) {
 			// 删除成功
 			map.put("success", true);
 		} else {
